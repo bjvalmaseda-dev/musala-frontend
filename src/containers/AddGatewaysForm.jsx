@@ -7,9 +7,11 @@ import validations from '@utils/validations';
 import useApi from '@hooks/useApi';
 import AddDeviceForm from '@components/AddDeviceForm';
 import { Add } from '@mui/icons-material';
+import useToast from '@hooks/useToast';
 
 const AddGatewaysForm = (props) => {
   const { setOpen, fetchGateways } = props;
+  const toast = useToast();
   const { addGateway } = useApi();
   const {
     register,
@@ -46,6 +48,7 @@ const AddGatewaysForm = (props) => {
     await addGateway(data);
     fetchGateways();
     resetForm();
+    toast({ open: true, message: 'Gateways added correctly', severity: 'success' });
   };
 
   const resetForm = () => {

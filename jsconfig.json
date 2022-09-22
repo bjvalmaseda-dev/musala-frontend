@@ -4,6 +4,7 @@
     "paths": {
       "@styles/*": ["styles/*"],
       "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
       "@common/*": ["common/*"],
       "@layout/*": ["layout/*"],
       "@hooks/*": ["hooks/*"],
