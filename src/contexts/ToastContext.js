@@ -12,12 +12,12 @@ export const ToastContext = createContext();
 const useInitial = () => {
   const [state, setState] = useState(initial);
   const toast = (payload) => {
-    setState({ ...state, ...payload });
+    setState({ ...state, open: true, ...payload });
   };
   const closeToast = () => {
     setState({ ...state, open: false });
   };
-  return { state, toast, closedToast: closeToast };
+  return { state, toast, closeToast };
 };
 
 const ToastContextProvider = ({ children }) => {

@@ -1,5 +1,7 @@
 import DevicesList from '@components/DevicesList';
 import useApi from '@hooks/useApi';
+import useToast from '@hooks/useToast';
+import { LoadingButton } from '@mui/lab';
 import { Button, Paper, TextField, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import validations from '@utils/validations';
@@ -8,11 +10,12 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const Gateway = () => {
+export default function Gateway() {
   const [gateway, setGateway] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const { updateGateway, getGateway, deleteGateway } = useApi();
+  const { loading, updateGateway, getGateway, deleteGateway } = useApi();
   const [openDelete, setOpenDelete] = useState(false);
+  const toast = useToast();
   const {
     register,
     handleSubmit,
@@ -39,7 +42,8 @@ const Gateway = () => {
 
   const destroy = async () => {
     await deleteGateway(id);
-    router.push('/');
+    await router.push('/');
+    toast({ message: 'Gateway deleted', severity: 'success' });
   };
 
   const onSubmitEdit = async (data) => {
@@ -47,6 +51,7 @@ const Gateway = () => {
     reset();
     await fetchData();
     setIsEditing(false);
+    toast({ message: 'Change saved correctly', severity: 'success' });
   };
 
   const fetchData = async () => {
@@ -73,6 +78,7 @@ const Gateway = () => {
                   defaultValue={gateway.name}
                   variant="standard"
                   size="medium"
+                  disabled={loading}
                   name="name"
                   {...register('name', { required: true })}
                   error={errors.name ? true : false}
@@ -81,6 +87,7 @@ const Gateway = () => {
                   defaultValue={gateway.ip}
                   variant="standard"
                   size="small"
+                  disabled={loading}
                   name="ip"
                   placeholder="xxx.xxx.xxx.xxx"
                   helperText={errors.ip?.message}
@@ -98,9 +105,9 @@ const Gateway = () => {
                 <Button variant="outlined" color="error" onClick={handleCancelEdit}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="success" type="submit">
+                <LoadingButton loading={loading} variant="contained" color="success" type="submit">
                   Save
-                </Button>
+                </LoadingButton>
               </Stack>
             </Stack>
           </form>
@@ -125,6 +132,4 @@ const Gateway = () => {
       <DeleteDialog open={openDelete} setOpen={setOpenDelete} action={destroy} />
     </Container>
   );
-};
-
-export default Gateway;
+}

@@ -12,9 +12,16 @@ export default function Toast() {
 
   const { open, message, duration, severity } = state;
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    closeToast();
+  };
+
   return (
-    <Snackbar open={open} autoHideDuration={duration} onClose={closeToast}>
-      <Alert onClose={closeToast} severity={severity} sx={{ width: '100%' }}>
+    <Snackbar open={open} autoHideDuration={duration} onClose={handleClose}>
+      <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
         {message}
       </Alert>
     </Snackbar>

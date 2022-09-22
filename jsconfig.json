@@ -5,6 +5,7 @@
       "@styles/*": ["styles/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
+      "@containers/*": ["containers/*"],
       "@common/*": ["common/*"],
       "@layout/*": ["layout/*"],
       "@hooks/*": ["hooks/*"],

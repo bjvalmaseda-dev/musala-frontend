@@ -1,15 +1,15 @@
 import BasicModal from '@components/BasicModal';
 import { Button, FormControlLabel, Switch, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import useApi from '@hooks/useApi';
 import { useRouter } from 'next/router';
-import { ToastContext } from 'contexts/ToastContext';
+import useToast from '@hooks/useToast';
 
 const AddDeviceModal = (props) => {
   const { setOpen, open, updateData } = props;
-  const { toast } = useContext(ToastContext);
+  const toast = useToast();
   const {
     query: { id },
   } = useRouter();
@@ -25,7 +25,7 @@ const AddDeviceModal = (props) => {
     await addDevice({ ...data, gatewayId: id });
     await updateData();
     resetForm();
-    toast({ open: true, message: 'Device added correctly' });
+    toast({ message: 'Device added correctly', severity: 'success' });
   };
 
   const resetForm = () => {
