@@ -1,31 +1,55 @@
 import BasicModal from '@components/BasicModal';
-import { Button, TextField } from '@mui/material';
+import { Button, FormLabel, IconButton, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import validations from '@utils/validations';
 import useApi from '@hooks/useApi';
+import AddDeviceForm from '@components/AddDeviceForm';
+import { Add } from '@mui/icons-material';
 
 const AddGatewaysForm = (props) => {
+  const { setOpen, fetchGateways } = props;
+  const { addGateway } = useApi();
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    control,
     formState: { errors },
   } = useForm();
 
-  const { addGateway } = useApi();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'devices',
+  });
 
-  const { setOpen, fetchGateways } = props;
+  const watchFieldArray = watch('devices');
+
+  const controlledFields = fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchFieldArray[index],
+    };
+  });
+
+  const handleAddDevice = () => {
+    append({
+      vendor: '',
+      status: true,
+    });
+  };
 
   const onSubmit = async (data) => {
-    const response = await addGateway(data);
+    console.log(data);
+    await addGateway(data);
     fetchGateways();
     resetForm();
   };
 
   const resetForm = () => {
-    reset({ name: '', ip: '' });
+    reset();
     setOpen(false);
   };
 
@@ -59,6 +83,19 @@ const AddGatewaysForm = (props) => {
               })}
             />
           </Stack>
+          <Box marginTop={2}>
+            <Stack direction="row" justifyContent="space-between" width="100%" alignItems="center">
+              <FormLabel component="legend">Devices</FormLabel>
+              <IconButton aria-label="delete" onClick={handleAddDevice} disabled={fields.length >= 10}>
+                <Add />
+              </IconButton>
+            </Stack>
+            <Stack direction="column" spacing={2}>
+              {controlledFields.map((field, index) => (
+                <AddDeviceForm register={register} key={`device-${index}`} index={index} remove={remove} control={control} />
+              ))}
+            </Stack>
+          </Box>
           <Stack width="100%" direction="row" marginTop={2} justifyContent="end" spacing={2}>
             <Button variant="outlined" color="error" onClick={resetForm}>
               Cancel
