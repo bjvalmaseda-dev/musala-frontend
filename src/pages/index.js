@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import useApi from '@hooks/useApi';
 import useToast from '@hooks/useToast';
-import { Info } from '@mui/icons-material';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import AddGatewaysForm from '@containers/AddGatewaysForm';
@@ -9,6 +8,7 @@ import DeleteDialog from '@containers/DeleteDialog';
 import { GlobalContext } from 'contexts/GlobalContext';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
+import GatewaysListSkeleton from '@components/GatewaysListSkeleton';
 
 export default function Home() {
   const { loading, getGateways, deleteGateway } = useApi();
@@ -50,19 +50,19 @@ export default function Home() {
         </Button>
       </Stack>
       <AddGatewaysForm open={open} setOpen={setOpen} fetchGateways={fetchGateways} />
-      {!loading ? (
-        <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="left">Name</TableCell>
-                <TableCell align="left">Ip(v4)</TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.gateways ? (
+      <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Ip(v4)</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!loading ? (
+              state.gateways ? (
                 state.gateways.map((gateway) => (
                   <TableRow key={`gateway-${gateway.id}`}>
                     <TableCell component="th" scope="row">
@@ -92,13 +92,13 @@ export default function Home() {
                     </Stack>
                   </TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      ) : (
-        'Loading...'
-      )}
+              )
+            ) : (
+              <GatewaysListSkeleton />
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <DeleteDialog open={openDelete} setOpen={setOpenDelete} action={deleteAction} />
     </>
   );
