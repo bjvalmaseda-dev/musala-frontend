@@ -1,8 +1,5 @@
 <a name="readme-top"></a>
 
-[![MIT License][license-shield]][license-url]
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -115,14 +112,6 @@ yarn test
 ```
 
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- CONTACT -->
 ## Contact
 
@@ -133,10 +122,6 @@ Project Link: [https://github.com/bjvalmaseda-dev/musala-frontend](https://githu
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[license-shield]: https://img.shields.io/github/license/bjvalmaseda-dev/musala-frontend?style=flat
-[license-url]: https://github.com/bjvalmaseda-dev/musala-frontend/blob/master/LICENSE.txt
 [product-gateway]: readme/gateway.png
 [product-list]: readme/gateway-list.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
