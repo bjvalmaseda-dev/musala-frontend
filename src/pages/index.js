@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import useApi from '@hooks/useApi';
-import useToast from '@hooks/useToast';
+import useApi from './../hooks/useApi';
+import useToast from './../hooks/useToast';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import AddGatewaysForm from '@containers/AddGatewaysForm';
-import DeleteDialog from '@containers/DeleteDialog';
-import { GlobalContext } from '@contexts/GlobalContext';
+import AddGatewaysForm from './../containers/AddGatewaysForm';
+import DeleteDialog from './../containers/DeleteDialog';
+import { GlobalContext } from './../contexts/GlobalContext';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
-import GatewaysListSkeleton from '@components/GatewaysListSkeleton';
+import GatewaysListSkeleton from './../components/GatewaysListSkeleton';
 
 export default function Home() {
   const { getGateways, deleteGateway } = useApi();

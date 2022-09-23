@@ -1,5 +1,6 @@
 import Layout from '@layout/Layout';
 import GlobalContextProvider from 'contexts/GlobalContext';
+import Head from 'next/head';
 
 import Router from 'next/router';
 import NProgress from 'nprogress';
@@ -13,6 +14,9 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }) {
   return (
     <GlobalContextProvider>
+      <Head>
+        <title>Musala frontend</title>
+      </Head>
       <Layout>
         <Component {...pageProps} />
       </Layout>

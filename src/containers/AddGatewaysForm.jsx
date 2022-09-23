@@ -1,13 +1,13 @@
-import BasicModal from '@components/BasicModal';
+import BasicModal from './../components/BasicModal';
 import { Button, FormLabel, IconButton, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import validations from '@utils/validations';
-import useApi from '@hooks/useApi';
-import AddDeviceForm from '@components/AddDeviceForm';
+import validations from './../utils/validations';
+import useApi from './../hooks/useApi';
+import AddDeviceForm from './../components/AddDeviceForm';
 import { Add } from '@mui/icons-material';
-import useToast from '@hooks/useToast';
+import useToast from './../hooks/useToast';
 
 const AddGatewaysForm = (props) => {
   const { setOpen, fetchGateways } = props;
@@ -67,6 +67,7 @@ const AddGatewaysForm = (props) => {
               variant="outlined"
               fullWidth
               name="name"
+              placeholder="Name"
               {...register('name', { required: true })}
             />
             <TextField

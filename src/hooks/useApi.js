@@ -1,4 +1,4 @@
-import { gateway, devices } from '@services/gateways';
+import { gateway, devices } from './../services/gateways';
 import axios from 'axios';
 import useToast from './useToast';
 

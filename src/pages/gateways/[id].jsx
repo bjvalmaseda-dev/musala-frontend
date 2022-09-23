@@ -5,7 +5,7 @@ import useApi from '@hooks/useApi';
 import useToast from '@hooks/useToast';
 import { Button, Paper, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
-import DeleteDialog from 'containers/DeleteDialog';
+import DeleteDialog from '@containers/DeleteDialog';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -20,9 +20,7 @@ export default function Gateway({ data }) {
   const toast = useToast();
 
   const router = useRouter();
-  const {
-    query: { id },
-  } = router;
+  const { id } = gateway;
 
   const handleEdit = () => {
     setIsEditing(true);
