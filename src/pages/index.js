@@ -1,19 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import useApi from '@hooks/useApi';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import useApi from './../hooks/useApi';
+import useToast from './../hooks/useToast';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import AddGatewaysForm from 'containers/AddGatewaysForm';
-import DeleteDialog from 'containers/DeleteDialog';
-import { GlobalContext } from 'contexts/GlobalContext';
+import AddGatewaysForm from './../containers/AddGatewaysForm';
+import DeleteDialog from './../containers/DeleteDialog';
+import { GlobalContext } from './../contexts/GlobalContext';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
+import GatewaysListSkeleton from './../components/GatewaysListSkeleton';
 
 export default function Home() {
   const { getGateways, deleteGateway } = useApi();
+  const [loading, setLoading] = useState(true);
   const { state, setGateways } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [toDelete, setToDelete] = useState(null);
+  const toast = useToast();
   const fetchGateways = async () => {
     const gateways = await getGateways();
     setGateways(gateways);
@@ -29,13 +33,17 @@ export default function Home() {
   };
 
   const deleteAction = async () => {
-    const response = await deleteGateway(toDelete.id);
-    console.log(response);
+    await deleteGateway(toDelete.id);
+    toast({ message: 'Gateway deleted', severity: 'success' });
     fetchGateways();
   };
 
   useEffect(() => {
-    fetchGateways();
+    setLoading(true);
+    (async () => {
+      await fetchGateways();
+    })();
+    setLoading(false);
   }, []);
 
   return (
@@ -57,28 +65,40 @@ export default function Home() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state.gateways ? (
-              state.gateways.map((gateway) => (
-                <TableRow key={`gateway-${gateway.id}`}>
-                  <TableCell component="th" scope="row">
-                    {gateway.id}
-                  </TableCell>
-                  <TableCell align="left">{gateway.name}</TableCell>
-                  <TableCell align="left">{gateway.ip}</TableCell>
-                  <TableCell align="right">
-                    <Stack direction="row" spacing={1} sx={{ justifyContent: 'end' }}>
-                      <Link href={`/gateways/${gateway.id}`} passHref>
-                        <Button variant="contained">Details</Button>
-                      </Link>
-                      <Button variant="contained" color="error" onClick={() => handleDelete(gateway)}>
-                        Delete
-                      </Button>
+            {!loading ? (
+              state.gateways ? (
+                state.gateways.map((gateway) => (
+                  <TableRow key={`gateway-${gateway.id}`}>
+                    <TableCell component="th" scope="row">
+                      {gateway.id}
+                    </TableCell>
+                    <TableCell align="left">{gateway.name}</TableCell>
+                    <TableCell align="left">{gateway.ip}</TableCell>
+                    <TableCell align="right">
+                      <Stack direction="row" spacing={1} sx={{ justifyContent: 'end' }}>
+                        <Link href={`/gateways/${gateway.id}`} passHref>
+                          <Button variant="contained">Details</Button>
+                        </Link>
+                        <Button variant="contained" color="error" onClick={() => handleDelete(gateway)}>
+                          Delete
+                        </Button>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={4}>
+                    <Stack alignItems="center">
+                      <Typography variant="h6" color="error">
+                        No devices
+                      </Typography>
                     </Stack>
                   </TableCell>
                 </TableRow>
-              ))
+              )
             ) : (
-              <div>Not gateways</div>
+              <GatewaysListSkeleton />
             )}
           </TableBody>
         </Table>
