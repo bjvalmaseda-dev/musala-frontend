@@ -8,12 +8,13 @@ import { useRouter } from 'next/router';
 import useToast from '@hooks/useToast';
 
 const AddDeviceModal = (props) => {
-  const { setOpen, open, updateData } = props;
+  const { setOpen, open, setDevices, devices } = props;
   const toast = useToast();
   const {
     query: { id },
   } = useRouter();
   const { addDevice } = useApi();
+
   const {
     register,
     handleSubmit,
@@ -22,10 +23,16 @@ const AddDeviceModal = (props) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await addDevice({ ...data, gatewayId: id });
-    await updateData();
-    resetForm();
-    toast({ message: 'Device added correctly', severity: 'success' });
+    try {
+      const response = await addDevice({ ...data, gatewayId: id });
+      if (response.status === 201) {
+        setDevices([...devices, response.data]);
+        resetForm();
+        toast({ message: 'Device added correctly', severity: 'success' });
+      }
+    } catch (e) {
+      return null;
+    }
   };
 
   const resetForm = () => {

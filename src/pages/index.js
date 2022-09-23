@@ -5,13 +5,14 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { Stack } from '@mui/system';
 import AddGatewaysForm from '@containers/AddGatewaysForm';
 import DeleteDialog from '@containers/DeleteDialog';
-import { GlobalContext } from 'contexts/GlobalContext';
+import { GlobalContext } from '@contexts/GlobalContext';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import GatewaysListSkeleton from '@components/GatewaysListSkeleton';
 
 export default function Home() {
-  const { loading, getGateways, deleteGateway } = useApi();
+  const { getGateways, deleteGateway } = useApi();
+  const [loading, setLoading] = useState(true);
   const { state, setGateways } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -34,12 +35,15 @@ export default function Home() {
   const deleteAction = async () => {
     await deleteGateway(toDelete.id);
     toast({ message: 'Gateway deleted', severity: 'success' });
-
     fetchGateways();
   };
 
   useEffect(() => {
-    fetchGateways();
+    setLoading(true);
+    (async () => {
+      await fetchGateways();
+    })();
+    setLoading(false);
   }, []);
 
   return (
