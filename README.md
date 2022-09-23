@@ -1,7 +1,5 @@
 <a name="readme-top"></a>
 
--->
-
 [![MIT License][license-shield]][license-url]
 
 
